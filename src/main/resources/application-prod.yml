@@ -1,0 +1,66 @@
+quarkus:
+  http:
+    port: ${SERVER_PORT:8088}
+    root-path: /btpxpress
+    cors:
+      ~: true
+      origins: ${CORS_ORIGINS:https://api.lions.dev}
+      methods: GET,POST,PUT,DELETE,OPTIONS
+      headers: Content-Type,Authorization
+      exposed-headers: Content-Disposition
+      access-control-max-age: 24H
+      access-control-allow-credentials: true
+
+  log:
+    level: WARN
+    category:
+      "dev.lions.btpxpress":
+        level: INFO
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n"
+      color: false
+    file:
+      enable: true
+      path: /var/log/btpxpress/application.log
+      format: "%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{3.}] (%t) %s%e%n"
+      rotation:
+        max-file-size: 10M
+        max-backup-index: 5
+
+  security:
+    auth:
+      enabled: true
+      proactive: true
+
+  cache:
+    enabled: true
+    caffeine:
+      "default":
+        initial-capacity: 100
+        maximum-size: 1000
+        expire-after-write: 1h
+
+  hibernate-orm:
+    log:
+      sql: false
+    database:
+      default-schema: btpxpress
+    jdbc:
+      statement-batch-size: 100
+
+  transaction-manager:
+    default-transaction-timeout: 300
+
+  application:
+    name: btpxpress
+    version: ${APP_VERSION:1.0.0}
+
+  ssl:
+    native: true
+
+  package:
+    type: uber-jar
+    uber-jar: true
+    output-name: btpxpress
+    runner-suffix: runner
+    user-providers-directory: providers

@@ -3,17 +3,38 @@ quarkus:
     port: 8080
     cors:
       ~: true
-      origins: "*"
+      origins: "http://localhost:5173"
       methods: GET,POST,PUT,DELETE,OPTIONS
       headers: Content-Type,Authorization
       exposed-headers: Content-Disposition
       access-control-max-age: 24H
       access-control-allow-credentials: true
+    root-path: /api
+
+  log:
+    level: INFO
+    category:
+      "dev.lions.btpxpress":
+        level: DEBUG
+    console:
+      format: "%d{HH:mm:ss} %-5p [%c{2.}] (%t) %s%e%n"
+      color: true
+
+  security:
+    auth:
+      enabled: true
+      proactive: true
+
+  application:
+    name: btpxpress
+    version: 1.0.0
+
+  banner:
+    enabled: false
+
   package:
     type: uber-jar
 
-  # Configuration pour la production
-  application:
-    name: btpxpress
-  banner:
-    enabled: false
+  dev:
+    ui:
+      enabled: true
